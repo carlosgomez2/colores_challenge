@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
 # Controller
-class SessionsController < ApplicationController
-  def new; end
-
+class SessionsController < Devise::SessionsController
   def create
-    puts params.inspect
-    user = User.find_by_email(params[:email])
-    puts "el user #{user.email}"
+    user = User.select(:id, :email, :encrypted_password).find_by_email(email)
 
     if user&.valid_password?(params[:password])
       token = user.generate_jwt
-      puts "el token #{token}"
-      render json: token.to_json
+      res = { user: user, token: token }.to_json
+      render json: res, status: :created
     else
       render json: {
         errors: { 'email or password' => ['is invalid'] }
       }, status: :unprocessable_entity
     end
+  end
+
+  def email
+    params[:email]
   end
 end
