@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Controller
-class SessionsController < ApplicationController
+class SessionsController < Devise::RegistrationsController
   def create
     user = User.new(sign_up_params)
 
