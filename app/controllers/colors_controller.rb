@@ -2,9 +2,8 @@
 
 # Controller
 class ColorsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
   before_action :set_color, only: %i[show edit update destroy]
-  before_action :admin?, only: %i[new edit create update destroy]
+  before_action :admin?, except: :index
 
   def index
     @colors = Color.all
