@@ -4,7 +4,6 @@
 class ApplicationController < ActionController::API
   respond_to :json
   before_action :process_token
-  before_action :current_user
   before_action :authenticate_user!
 
   private
@@ -34,10 +33,13 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    @current_user ||= User.find(@current_user_id)
+    return unless @current_user_id
+
+    @current_user ||= super || User.find(@current_user_id)
   end
 
   def admin?
+    puts "#{current_user} || #{@current_user}"
     return unless @current_user.type.nil?
 
     render json: { error: 'Unauthorized' }, status: :unauthorized
