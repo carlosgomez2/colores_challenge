@@ -6,7 +6,7 @@ class ColorsController < ApplicationController
   before_action :admin?, except: :index
 
   def index
-    @colors = Color.all
+    @colors = Color.descending_order
     render json: @colors, each_serializer: ColorSerializer
   end
 
