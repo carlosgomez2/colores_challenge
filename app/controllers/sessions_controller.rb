@@ -2,6 +2,9 @@
 
 # Controller
 class SessionsController < Devise::SessionsController
+  skip_before_action :process_token
+  skip_before_action :authenticate_user!
+
   def create
     user = User.select(:id, :email, :encrypted_password).find_by_email(email)
 
